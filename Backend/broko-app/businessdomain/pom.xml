@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>com.broko.app</groupId>
+  <groupId>com.broko.app.businessdomain</groupId>
   <artifactId>businessdomain</artifactId>
   <version>1.0-SNAPSHOT</version>
 
@@ -23,6 +23,8 @@
     <module>fraud-service</module>
     <module>dashboard-service</module>
     <module>conversion-service</module>
+    <module>user-service</module>
+    <module>auth-service</module>
   </modules>
 
   <properties>

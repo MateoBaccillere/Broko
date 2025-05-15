@@ -8,10 +8,10 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>com.broko.app</groupId>
-	<artifactId>transactions-service</artifactId>
+	<artifactId>user-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>transactions-service</name>
-	<description>Spring Boot for Transactions</description>
+	<name>user-service</name>
+	<description>Spring Boot for User</description>
 	<url/>
 	<licenses>
 		<license/>
