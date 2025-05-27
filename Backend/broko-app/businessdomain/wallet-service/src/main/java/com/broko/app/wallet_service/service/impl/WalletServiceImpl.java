@@ -3,6 +3,8 @@ package com.broko.app.wallet_service.service.impl;
 import com.broko.app.wallet_service.dto.TransferRequestDTO;
 import com.broko.app.wallet_service.dto.WalletRequestDTO;
 import com.broko.app.wallet_service.dto.WalletResponseDTO;
+import com.broko.app.wallet_service.event.WalletEventProducer;
+import com.broko.app.wallet_service.event.WalletUpdateEvent;
 import com.broko.app.wallet_service.exception.WalletNotFoundException;
 import com.broko.app.wallet_service.mapper.WalletMapper;
 import com.broko.app.wallet_service.model.Wallet;
@@ -21,6 +23,7 @@ import java.util.UUID;
 public class WalletServiceImpl implements WalletService {
 
     private final WalletRepository repository;
+    private final WalletEventProducer walletEventProducer;
 
     @Override
     public List<WalletResponseDTO> getWalletsByUser(UUID userId) {
@@ -41,7 +44,19 @@ public class WalletServiceImpl implements WalletService {
     public WalletResponseDTO createWallet(UUID userId, WalletRequestDTO dto) {
         Wallet wallet = WalletMapper.toEntity(dto);
         wallet.setUserId(userId);
-        return WalletMapper.toDTO(repository.save(wallet));
+        WalletResponseDTO wallet1 = WalletMapper.toDTO(repository.save(wallet));
+
+        walletEventProducer.publish(WalletUpdateEvent.builder()
+                .walletId(wallet.getId())
+                .userId(wallet.getUserId())
+                .balance(wallet.getBalance())
+                .currency(wallet.getCurrency())
+                .operation("CREATED")
+                .timestamp(java.time.Instant.now().toString())
+                .build());
+
+        return wallet1;
+
     }
 
     @Override
