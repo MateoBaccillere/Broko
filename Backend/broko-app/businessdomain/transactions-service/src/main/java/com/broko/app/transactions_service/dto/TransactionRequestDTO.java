@@ -1,13 +1,15 @@
-package com.broko.app.transactions_service;
+package com.broko.app.transactions_service.dto;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class TransactionRequest {
+@Data
+public class TransactionRequestDTO {
     @NotNull
     private UUID senderWalletId;
 
