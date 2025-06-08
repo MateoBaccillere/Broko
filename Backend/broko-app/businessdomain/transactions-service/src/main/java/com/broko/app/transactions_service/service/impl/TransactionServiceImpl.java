@@ -2,6 +2,7 @@ package com.broko.app.transactions_service.service.impl;
 
 import com.broko.app.transactions_service.dto.TransactionRequestDTO;
 import com.broko.app.transactions_service.dto.TransactionResponseDTO;
+import com.broko.app.transactions_service.kafka.KafkaProducer;
 import com.broko.app.transactions_service.mapper.TransactionMapper;
 import com.broko.app.transactions_service.model.Transaction;
 import com.broko.app.transactions_service.model.TransactionStatus;
@@ -22,26 +23,25 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
+    private final KafkaProducer kafkaProducer;
 
     @Override
     public TransactionResponseDTO createTransaction(TransactionRequestDTO request) {
         validateTransactionRequest(request);
 
         Transaction transaction = transactionMapper.toEntity(request);
-
         transaction.setStatus(TransactionStatus.PENDING);
         transaction.setCreatedAt(LocalDateTime.now());
 
-        transactionRepository.save(transaction);
+        Transaction saved = transactionRepository.save(transaction);
 
-        // Simulación de lógica de negocio
-        transaction.setStatus(TransactionStatus.COMPLETED);
-        transactionRepository.save(transaction);
+        kafkaProducer.publishTransactionInitiatedEvent(saved); // Emitimos a Kafka
 
-        // TODO: publicar evento Kafka `transactions.completed`
-
-        return transactionMapper.toResponse(transaction);
+        // Importante: devolvemos la transacción como PENDING,
+        // ya que su resultado final se definirá asíncronamente
+        return transactionMapper.toResponse(saved);
     }
+
 
     @Override
     public TransactionResponseDTO getTransactionById(UUID id) {
