@@ -8,6 +8,7 @@ import com.broko.app.dashboard_service.model.UserMetrics;
 import com.broko.app.dashboard_service.repository.UserDailyMetricsRepository;
 import com.broko.app.dashboard_service.repository.UserMetricsRepository;
 import com.broko.app.dashboard_service.service.DashboardService;
+import com.broko.events.TransactionCompletedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ import java.util.UUID;
 public class DashboardServiceImpl implements DashboardService {
 
     private final UserMetricsRepository repository;
-    private final UserDailyMetricsRepository dailyMetricRepo;
+    private final UserDailyMetricsRepository metricRepository;
 
     @Override
     public SummaryDTO getUserSummary(UUID userId) {
@@ -44,7 +45,7 @@ public class DashboardServiceImpl implements DashboardService {
             default -> start = end.minusMonths(1); // fallback mensual
         }
 
-        var list = dailyMetricRepo.findAllByUserIdAndDateBetween(userId, start, end);
+        var list = metricRepository.findAllByUserIdAndDateBetween(userId, start, end);
 
         return list.stream().map(metric ->
                 MetricDTO.builder()
@@ -61,7 +62,7 @@ public class DashboardServiceImpl implements DashboardService {
             throw new IllegalArgumentException("Formato no soportado: " + format);
         }
 
-        List<UserDailyMetric> metrics = dailyMetricRepo.findAllByUserIdAndDateBetween(
+        List<UserDailyMetric> metrics = metricRepository.findAllByUserIdAndDateBetween(
                 userId,
                 LocalDate.now().minusDays(30),
                 LocalDate.now()
@@ -117,6 +118,19 @@ public class DashboardServiceImpl implements DashboardService {
                 .totalTransactions(totalTransactions)
                 .lastTransactionAt(lastTransaction)
                 .build();
+    }
+
+    @Override
+    public void registerTransaction(TransactionCompletedEvent event) {
+        // Simulación de lógica real: sumar +1 a transacciones del día, sumar monto, etc.
+        LocalDate today = event.getCompletedAt().toLocalDate();
+        UserDailyMetric metric = metricRepository.findByDate(today)
+                .orElseGet(() -> new UserDailyMetric(today, 0L, BigDecimal.ZERO));
+
+        metric.setTransactionCount(metric.getTransactionCount() + 1);
+        metric.setTotalVolume(metric.getTotalVolume().add(event.getAmount()));
+
+        metricRepository.save(metric);
     }
 
 }

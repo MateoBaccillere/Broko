@@ -1,6 +1,6 @@
 package com.broko.app.notification_service.event;
 
-import com.broko.app.notification_service.dto.TransactionCompletedEvent;
+import com.broko.events.TransactionCompletedEvent;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 

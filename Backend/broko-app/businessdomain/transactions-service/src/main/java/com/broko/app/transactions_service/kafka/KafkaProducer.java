@@ -1,8 +1,8 @@
 package com.broko.app.transactions_service.kafka;
 
-import com.broko.app.transactions_service.dto.TransactionCompletedEvent;
-import com.broko.app.transactions_service.dto.TransactionInitiatedEvent;
 import com.broko.app.transactions_service.model.Transaction;
+import com.broko.events.TransactionCompletedEvent;
+import com.broko.events.TransactionInitiatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;

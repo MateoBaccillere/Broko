@@ -14,6 +14,7 @@
         <module name="dashboard-service" />
         <module name="eureka" />
         <module name="user-service" />
+        <module name="broko-events" />
         <module name="notification-service" />
         <module name="wallet-service" />
         <module name="gateway" />

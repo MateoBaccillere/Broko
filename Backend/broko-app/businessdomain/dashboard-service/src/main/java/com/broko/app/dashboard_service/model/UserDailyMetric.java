@@ -38,4 +38,7 @@ public class UserDailyMetric {
 
     @Column(name = "total_received")
     private BigDecimal totalReceived;
+
+    public UserDailyMetric(LocalDate today, long l, BigDecimal zero) {
+    }
 }

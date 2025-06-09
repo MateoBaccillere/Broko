@@ -1,4 +1,4 @@
-package com.broko.app.transactions_service.kafka;
+package com.broko.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class TransactionStatusEvent {
+
     private UUID transactionId;
 }

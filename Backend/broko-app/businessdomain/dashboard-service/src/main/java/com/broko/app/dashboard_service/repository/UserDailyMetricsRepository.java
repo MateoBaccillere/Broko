@@ -6,10 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface UserDailyMetricsRepository extends JpaRepository<UserDailyMetric,Long> {
 
     List<UserDailyMetric> findAllByUserIdAndDateBetween(UUID userId, LocalDate start, LocalDate end);
+
+    Optional<UserDailyMetric> findByDate(LocalDate date);
 }

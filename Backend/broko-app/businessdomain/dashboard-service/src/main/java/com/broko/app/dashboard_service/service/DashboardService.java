@@ -2,7 +2,7 @@ package com.broko.app.dashboard_service.service;
 
 import com.broko.app.dashboard_service.dto.MetricDTO;
 import com.broko.app.dashboard_service.dto.SummaryDTO;
-import com.broko.app.dashboard_service.event.TransactionCompletedEvent;
+import com.broko.events.TransactionCompletedEvent;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,5 +16,6 @@ public interface DashboardService {
     byte[] exportUserData(UUID userId, String format);
 
     SummaryDTO getAdminOverview();
-    
+
+    void registerTransaction(TransactionCompletedEvent event);
 }

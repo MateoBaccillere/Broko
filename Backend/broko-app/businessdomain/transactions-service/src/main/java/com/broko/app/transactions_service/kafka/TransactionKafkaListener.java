@@ -3,6 +3,7 @@ package com.broko.app.transactions_service.kafka;
 import com.broko.app.transactions_service.model.Transaction;
 import com.broko.app.transactions_service.model.TransactionStatus;
 import com.broko.app.transactions_service.persistence.TransactionRepository;
+import com.broko.events.TransactionStatusEvent;
 import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;

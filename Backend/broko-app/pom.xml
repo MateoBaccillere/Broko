@@ -21,6 +21,7 @@
   <modules>
     <module>businessdomain</module>
     <module>infrestructuredomain</module>
+    <module>broko-events</module>
   </modules>
 
   <properties>

@@ -1,22 +1,21 @@
-package com.broko.app.notification_service.dto;
+package com.broko.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class TransactionCompletedEvent {
+@AllArgsConstructor
+public class TransactionInitiatedEvent {
 
     private UUID transactionId;
     private UUID senderWalletId;
     private UUID receiverWalletId;
     private BigDecimal amount;
     private String currency;
-    private LocalDateTime completedAt;
+
 }

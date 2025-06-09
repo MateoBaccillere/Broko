@@ -1,9 +1,9 @@
 package com.broko.app.wallet_service.event;
 
-import com.broko.app.transactions_service.dto.TransactionInitiatedEvent;
-import com.broko.app.transactions_service.kafka.TransactionStatusEvent;
 import com.broko.app.wallet_service.model.Wallet;
 import com.broko.app.wallet_service.repository.WalletRepository;
+import com.broko.events.TransactionInitiatedEvent;
+import com.broko.events.TransactionStatusEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
