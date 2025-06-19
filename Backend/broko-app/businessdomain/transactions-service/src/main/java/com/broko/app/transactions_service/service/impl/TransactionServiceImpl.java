@@ -10,10 +10,12 @@ import com.broko.app.transactions_service.persistence.TransactionRepository;
 import com.broko.app.transactions_service.service.TransactionService;
 import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -29,16 +31,13 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionResponseDTO createTransaction(TransactionRequestDTO request) {
         validateTransactionRequest(request);
 
-        Transaction transaction = transactionMapper.toEntity(request);
+        Transaction transaction = transactionMapper.toEntity(request, getUserIdFromContext());
         transaction.setStatus(TransactionStatus.PENDING);
         transaction.setCreatedAt(LocalDateTime.now());
 
         Transaction saved = transactionRepository.save(transaction);
 
-        kafkaProducer.publishTransactionInitiatedEvent(saved); // Emitimos a Kafka
-
-        // Importante: devolvemos la transacción como PENDING,
-        // ya que su resultado final se definirá asíncronamente
+        kafkaProducer.publishTransactionInitiatedEvent(saved);
         return transactionMapper.toResponse(saved);
     }
 
@@ -58,5 +57,19 @@ public class TransactionServiceImpl implements TransactionService {
             throw new IllegalArgumentException("Transaction amount must be greater than zero");
         }
     }
+
+    private UUID getUserIdFromContext() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return UUID.fromString(userId);
+    }
+
+    @Override
+    public List<TransactionResponseDTO> getTransactionsByUserId(UUID userId) {
+        return transactionRepository.findByUserId(userId).stream()
+                .map(transactionMapper::toResponse)
+                .toList();
+    }
+
+
 
 }

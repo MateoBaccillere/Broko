@@ -11,6 +11,7 @@ import java.util.UUID;
 public class TransactionResponseDTO {
 
     private UUID id;
+    private UUID userId;
     private UUID senderWalletId;
     private UUID receiverWalletId;
     private BigDecimal amount;

@@ -20,6 +20,10 @@ public class Transaction {
     @GeneratedValue
     private UUID id;
 
+    @Column(nullable = false, name = "user_id")
+    private UUID userId;
+
+
     @Column(nullable = false, name = "sender_wallet_id")
     private UUID senderWalletId;
 
