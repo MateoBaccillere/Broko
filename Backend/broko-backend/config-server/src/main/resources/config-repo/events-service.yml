@@ -6,8 +6,18 @@ spring:
     name: events-service
   datasource:
     url: jdbc:mysql://localhost:3306/events_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-    username: root
-    password: root
+    username: broko
+    password: secret123
     driver-class-name: com.mysql.cj.jdbc.Driver
-  kafka:
-    bootstrap-servers: localhost:9092
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+broko:
+  jwt:
+    secret: super-secret-jwt-key
+    expiration: 3600000

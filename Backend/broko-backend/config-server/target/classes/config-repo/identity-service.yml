@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: identity-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/identity_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: broko
+    password: secret123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+broko:
+  jwt:
+    secret: super-secret-jwt-key
+    expiration: 3600000
