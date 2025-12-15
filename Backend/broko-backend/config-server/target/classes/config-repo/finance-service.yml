@@ -5,10 +5,10 @@ spring:
   application:
     name: finance-service
   datasource:
-    url: jdbc:mysql://localhost:3306/finance_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:h2:mem:broko-dev;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: broko
     password: secret123
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
       ddl-auto: update
